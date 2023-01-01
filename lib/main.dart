@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rahove_exam/profile_page.dart';
 import './home.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: buildMaterialColor(Color(0xffa273ed)),
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 

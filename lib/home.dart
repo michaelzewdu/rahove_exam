@@ -1,5 +1,8 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:draw_graph/draw_graph.dart';
+import 'package:draw_graph/models/feature.dart';
+import 'package:rahove_exam/profile_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -43,11 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Image.asset(
-                    fit: BoxFit.fitWidth,
-                    '../assets/images/selamina.jpg',
-                    height: 35,
-                    width: 35,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProfilePage()));
+                    },
+                    child: Image.network('https://picsum.photos/250?image=9',
+                        height: 35, width: 35),
                   ),
                 ),
               ),
@@ -93,39 +98,66 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 300,
-                      child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: const [
-                            SizedBox(
-                              width: 12,
-                            ),
-                            HorizontalCard(
-                              cardTitle: 'Feres Transport',
-                              cardURL: 'http://www.feres.com',
-                            ),
-                            HorizontalCard(
-                              cardTitle: 'Feres Transport',
-                              cardURL: 'http://www.feres.com',
-                            )
-                          ]),
+                      child:
+                          ListView(scrollDirection: Axis.horizontal, children: [
+                        SizedBox(
+                          width: 12,
+                        ),
+                        HorizontalCard(
+                          cardTitle: 'Feres Transport',
+                          cardURL: 'http://www.feres.com',
+                        ),
+                        HorizontalCard(
+                          cardTitle: 'Feres Transport',
+                          cardURL: 'http://www.feres.com',
+                        )
+                      ]),
                     )
                   ],
                 ),
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Recent Operations',
+                  style: TextStyle(color: Colors.purple)),
+            ),
+          ),
           SliverList(
               delegate:
                   SliverChildBuilderDelegate((BuildContext context, int index) {
-            return Container(
-              color: index.isOdd ? Colors.white : Colors.grey,
-              height: 50,
-              child: Center(
-                  child: Text(
-                '$index',
-                textScaleFactor: 3,
-              )),
-            );
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, top: 8, bottom: 0),
+                    child: Container(
+                      child: Text(
+                        'Today',
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: Colors.black38),
+                    ),
+                  ),
+                  PeopleTile(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Divider(height: 0, color: Colors.grey),
+                  ),
+                  PeopleTile(),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
+                    child: Divider(height: 0, color: Colors.grey),
+                  ),
+                ]);
           }, childCount: 25))
         ],
       ),
@@ -136,9 +168,61 @@ class _MyHomePageState extends State<MyHomePage> {
 class HorizontalCard extends StatelessWidget {
   final String cardTitle;
   final String cardURL;
+  final List<Feature> features = [
+    Feature(
+      title: "Drink Water",
+      color: Colors.green,
+      data: [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.4,
+        0.1,
+        0.1,
+        0.3,
+        0.1,
+        0.4,
+        0.1,
+        0.1,
+        0.1,
+        0.3,
+        0.3,
+        0.1,
+        0.8,
+        0.1,
+        0.4,
+        0.1,
+        0.1
+      ],
+    ),
+    /*
+    Feature(
+      title: "Exercise",
+      color: Colors.grey,
+      data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ),
+    Feature(
+      title: "Study",
+      color: Colors.grey,
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ),
 
-  const HorizontalCard(
-      {Key? key, required this.cardTitle, required this.cardURL})
+    Feature(
+      title: "Water Plants",
+      color: Colors.green,
+      data: [0.6, 0.2, 0, 0.1, 1],
+    ),
+    Feature(
+      title: "Grocery Shopping",
+      color: Colors.amber,
+      data: [0.25, 1, 0.3, 0.8, 0.6],
+    ),
+
+     */
+  ];
+
+  HorizontalCard({Key? key, required this.cardTitle, required this.cardURL})
       : super(key: key);
 
   @override
@@ -147,7 +231,7 @@ class HorizontalCard extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Container(
         height: 200,
-        width: 400,
+        width: 430,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24), color: Colors.white),
         child: Column(
@@ -157,7 +241,8 @@ class HorizontalCard extends StatelessWidget {
               children: [
                 Container(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(
+                        top: 16, bottom: 8.0, left: 8, right: 8),
                     child: Row(children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0, right: 8),
@@ -174,15 +259,18 @@ class HorizontalCard extends StatelessWidget {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            cardTitle,
-                            style: TextStyle(fontWeight: FontWeight.w700),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 4.0),
+                            child: Text(
+                              cardTitle,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w700),
+                            ),
                           ),
                           Text(
                             cardURL,
-                            style: TextStyle(fontSize: 8),
+                            style: const TextStyle(fontSize: 11),
                           )
                         ],
                       )
@@ -193,7 +281,7 @@ class HorizontalCard extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8.0),
                   child: IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.menu,
                         color: Colors.grey,
                       )),
@@ -205,18 +293,158 @@ class HorizontalCard extends StatelessWidget {
               height: 5,
               thickness: 2,
             ),
-            LineGraph(
-              features: features,
-              size: Size(320, 400),
-              labelX: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5'],
-              labelY: ['20%', '40%', '60%', '80%', '100%'],
-              showDescription: true,
-              graphColor: Colors.white30,
-              graphOpacity: 0.2,
-              verticalFeatureDirection: true,
-              descriptionHeight: 130,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 15),
+                      Text('500'),
+                      SizedBox(height: 135),
+                      Text('0')
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      width: 390,
+                      height: 3,
+                      child: DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: double.infinity,
+                        lineThickness: 1.0,
+                        dashLength: 8.0,
+                        dashColor: Colors.grey,
+                        dashRadius: 2.0,
+                        dashGapLength: 6,
+                        dashGapColor: Colors.transparent,
+                        dashGapRadius: 0.0,
+                      ),
+                    ),
+                    LineGraph(
+                      features: features,
+                      size: const Size(390, 150),
+                      labelX: const [
+                        '0',
+                        '1',
+                        '2',
+                        ' 3',
+                        ' 4',
+                        ' 5',
+                        '6',
+                        '7',
+                        '8',
+                        '9',
+                        '10',
+                        '11',
+                        '12',
+                        '13',
+                        '14',
+                        '15',
+                        '16',
+                        '17',
+                        '18',
+                        '19',
+                        '20'
+                      ],
+                      labelY: const [''],
+                      showDescription: false,
+                      graphOpacity: 0,
+                      verticalFeatureDirection: false,
+                      graphColor: Colors.white,
+                      descriptionHeight: 0,
+                    ),
+                    Container(
+                      width: 390,
+                      height: 3,
+                      child: DottedLine(
+                        direction: Axis.horizontal,
+                        //lineLength: double.infinity,
+                        lineThickness: 1.0,
+                        dashLength: 8.0,
+                        dashColor: Colors.grey,
+                        dashRadius: 0.0,
+                        dashGapLength: 6.0,
+                        dashGapColor: Colors.transparent,
+                        dashGapRadius: 0.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class PeopleTile extends StatelessWidget {
+  const PeopleTile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8),
+      child: ListTile(
+        tileColor: Colors.black12,
+        leading: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
+            child: Image.network('https://picsum.photos/250?image=9',
+                height: 45, width: 45),
+          ),
+        ),
+        title: Text(
+          "Yonas Tesfaye",
+        ),
+        subtitle: Text(
+          '+251 939 09 0908',
+          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w300),
+        ),
+        trailing: Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Column(
+            children: [
+              Container(
+                width: 85,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: Colors.green,
+                      size: 8,
+                    ),
+                    Text('1000.2 '),
+                    Text(
+                      'ETB',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w200, color: Colors.grey),
+                    )
+                  ],
+                ),
+              ),
+              Text(
+                '04:08AM',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w100),
+              )
+            ],
+          ),
         ),
       ),
     );
