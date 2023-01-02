@@ -11,8 +11,8 @@ class _ProfilePageState extends State<ProfilePage> {
   bool streched = true;
 
   double imageBorder = 3;
-  double collapsedImageContainerWidth = 150;
-  double collapsedImageContainerHeight = 150;
+  double collapsedImageContainerWidth = 75;
+  double collapsedImageContainerHeight = 75;
 
   @override
   Widget build(BuildContext context) {
@@ -89,22 +89,25 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AnimatedContainer(
+                                Container(
                                   height: collapsedImageContainerHeight,
                                   width: collapsedImageContainerWidth,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(75),
                                     border: Border.all(
                                         width: imageBorder,
                                         color: Colors.white),
                                   ),
-                                  duration: Duration(seconds: 1),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(75),
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
                                     child: GestureDetector(
                                       onTap: () {},
-                                      child: Expanded(
+                                      child: AnimatedContainer(
+                                        curve: Curves.easeInOutSine,
+                                        height: collapsedImageContainerHeight,
+                                        width: collapsedImageContainerWidth,
+                                        duration: Duration(seconds: 1),
                                         child: Image.asset(
                                           fit: BoxFit.fitWidth,
                                           '../assets/images/selamina.jpg',
@@ -261,15 +264,40 @@ class _ProfilePageState extends State<ProfilePage> {
             //           )
             //         : Container()),
           ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 75,
+                    child: Flexible(child: Divider()),
+                  ),
+                  Text(
+                    'Settings',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Flexible(child: Divider())
+                ],
+              ),
+            ),
+          ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: ListTile(
-                    leading: Icon(Icons.notifications),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                    tileColor: Colors.black12.withOpacity(0.03),
+                    leading: Icon(
+                      Icons.notifications_none_outlined,
+                      size: 32,
+                    ),
                     title: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 32),
                       child: Text('Notification'),
                     ),
                     trailing: Text(

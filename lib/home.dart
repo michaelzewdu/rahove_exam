@@ -2,6 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:draw_graph/draw_graph.dart';
 import 'package:draw_graph/models/feature.dart';
+import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:rahove_exam/profile_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -22,10 +23,46 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   final bool _pinned = true;
   final bool _snap = false;
   final bool _floating = true;
+  late int currentPage;
+  late TabController tabController;
+
+  final BorderRadius _borderRadius = const BorderRadius.only(
+    topLeft: Radius.circular(25),
+    topRight: Radius.circular(25),
+  );
+
+  ShapeBorder? bottomBarShape = const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(50)),
+  );
+  SnakeBarBehaviour snakeBarStyle = SnakeBarBehaviour.floating;
+  EdgeInsets padding = const EdgeInsets.all(12);
+
+  int _selectedItemPosition = 0;
+  SnakeShape snakeShape = SnakeShape.circle;
+
+  bool showSelectedLabels = false;
+  bool showUnselectedLabels = false;
+
+  Color selectedColor = Colors.black;
+  Color unselectedColor = Colors.blueGrey;
+
+  Gradient selectedGradient =
+      const LinearGradient(colors: [Colors.red, Colors.amber]);
+  Gradient unselectedGradient =
+      const LinearGradient(colors: [Colors.red, Colors.blueGrey]);
+
+  Color? containerColor;
+  List<Color> containerColors = [
+    const Color(0xFFFDE1D7),
+    const Color(0xFFE4EDF5),
+    const Color(0xFFE7EEED),
+    const Color(0xFFF4E4CE),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => ProfilePage()));
                     },
-                    child: Image.network('https://picsum.photos/250?image=9',
-                        height: 35, width: 35),
+                    child: Image.asset(
+                        fit: BoxFit.fitWidth,
+                        '../assets/images/selamina.jpg',
+                        height: 35,
+                        width: 35),
                   ),
                 ),
               ),
@@ -160,6 +200,70 @@ class _MyHomePageState extends State<MyHomePage> {
                 ]);
           }, childCount: 25))
         ],
+      ),
+      bottomNavigationBar: SnakeNavigationBar.color(
+        // height: 80,
+        behaviour: snakeBarStyle,
+        snakeShape: snakeShape,
+        shape: bottomBarShape,
+        padding: padding,
+
+        ///configuration for SnakeNavigationBar.color
+        snakeViewColor: selectedColor,
+        selectedItemColor: Theme.of(context).primaryColor,
+        //snakeShape == SnakeShape.indicator ? selectedColor : null,
+        unselectedItemColor: unselectedColor,
+
+        ///configuration for SnakeNavigationBar.gradient
+        // snakeViewGradient: selectedGradient,
+        // selectedItemGradient: snakeShape == SnakeShape.indicator ? selectedGradient : null,
+        // unselectedItemGradient: unselectedGradient,
+
+        showUnselectedLabels: showUnselectedLabels,
+        showSelectedLabels: showSelectedLabels,
+
+        currentIndex: _selectedItemPosition,
+        onTap: (index) => setState(() => _selectedItemPosition = index),
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined), label: 'tickets'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart), label: 'calendar'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_box_rounded), label: 'microphone'),
+          BottomNavigationBarItem(icon: Icon(Icons.face), label: 'search')
+        ],
+        selectedLabelStyle: const TextStyle(fontSize: 14),
+        unselectedLabelStyle: const TextStyle(fontSize: 10),
+      ),
+    );
+  }
+}
+
+class TabsIcon extends StatelessWidget {
+  final Color color;
+  final double height;
+  final double width;
+  final IconData icons;
+
+  const TabsIcon(
+      {Key? key,
+      this.color = Colors.white,
+      this.height = 60,
+      this.width = 50,
+      required this.icons})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: Center(
+        child: Icon(
+          icons,
+          color: color,
+        ),
       ),
     );
   }
@@ -394,7 +498,7 @@ class PeopleTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8),
       child: ListTile(
-        tileColor: Colors.black12,
+        tileColor: Colors.black12.withOpacity(0.03),
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -463,3 +567,36 @@ class PeopleTile extends StatelessWidget {
 // center the children vertically; the main axis here is the vertical
 // axis because Columns are vertical (the cross axis would be
 // horizontal).
+
+//Failed attempt to implement the floating naviagtion coming at you below
+// Container(
+// //height: 150,
+// // decoration: BoxDecoration(
+// //   boxShadow: [
+// // BoxShadow(blurRadius: 20, color: Colors.white),
+// //],
+// // borderRadius: BorderRadius.all(Radius.circular(50))),
+// child: SafeArea(
+// child: Padding(
+// padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+// child: ClipRRect(
+// borderRadius: BorderRadius.circular(200),
+// child: GNav(
+// backgroundColor: Colors.white,
+// duration: Duration(seconds: 2),
+// curve: Curves.easeInCirc,
+// mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+// // gap: 10,
+// iconSize: 25,
+// activeColor: Theme.of(context).primaryColor,
+// style: GnavStyle.oldSchool,
+// tabs: [
+// GButton(icon: Icons.home, style: GnavStyle.google),
+// GButton(icon: Icons.graphic_eq),
+// GButton(icon: Icons.adb_sharp),
+// GButton(icon: Icons.person)
+// ]),
+// ),
+// ),
+// ),
+// ),
