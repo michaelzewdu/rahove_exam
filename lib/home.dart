@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage>
                     },
                     child: Image.asset(
                         fit: BoxFit.fitWidth,
-                        '../assets/images/selamina.jpg',
+                        'assets/images/selamina.jpg',
                         height: 35,
                         width: 35),
                   ),
@@ -354,7 +354,7 @@ class HorizontalCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: Image.asset(
-                            '../assets/images/feres.jpeg',
+                            'assets/images/feres.jpeg',
                             fit: BoxFit.fitHeight,
                             height: 35,
                             width: 35,
