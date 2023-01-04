@@ -23,7 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
             floating: true,
             snap: false,
             pinned: true,
+
             expandedHeight: 400,
+
             leading: TextButton.icon(
               onPressed: () {
                 Navigator.pop(context);
@@ -82,8 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         image: DecorationImage(
                             fit: BoxFit.fitWidth,
                             opacity: streched ? 1 : 0,
-                            image:
-                                AssetImage('../assets/images/selamina.jpg'))),
+                            image: AssetImage('assets/images/selamina.jpg'))),
                     child: !streched
                         ? Center(
                             child: Column(
@@ -110,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         duration: Duration(seconds: 1),
                                         child: Image.asset(
                                           fit: BoxFit.fitWidth,
-                                          '../assets/images/selamina.jpg',
+                                          'assets/images/selamina.jpg',
                                         ),
                                       ),
                                     ),
@@ -159,10 +160,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           )
                         : Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 300),
+                              // SizedBox(
+                              //     width: MediaQuery.of(context).size.width,
+                              //     height: 300),
                               Container(
                                 height: 100,
                                 width: MediaQuery.of(context).size.width,

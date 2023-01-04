@@ -25,9 +25,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  final bool _pinned = true;
+  final bool _pinned = false;
   final bool _snap = false;
-  final bool _floating = true;
+  final bool _floating = false;
   late int currentPage;
   late TabController tabController;
 
@@ -118,21 +118,18 @@ class _MyHomePageState extends State<MyHomePage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      height: 25,
-                    ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.only(left: 20, top: 90),
                       child: const Text(
                         'Hello Soliana',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: const Text(
                         'Let\'s check our status',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                     Container(
@@ -223,47 +220,24 @@ class _MyHomePageState extends State<MyHomePage>
         showSelectedLabels: showSelectedLabels,
 
         currentIndex: _selectedItemPosition,
-        onTap: (index) => setState(() => _selectedItemPosition = index),
+        onTap: (index) {
+          setState(() => _selectedItemPosition = index);
+          if (index == 3) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => ProfilePage()));
+          }
+        },
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: 'tickets'),
+              icon: Icon(Icons.home_outlined), label: 'home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart), label: 'calendar'),
           BottomNavigationBarItem(
               icon: Icon(Icons.add_box_rounded), label: 'microphone'),
-          BottomNavigationBarItem(icon: Icon(Icons.face), label: 'search')
+          BottomNavigationBarItem(icon: Icon(Icons.face), label: 'profile')
         ],
         selectedLabelStyle: const TextStyle(fontSize: 14),
         unselectedLabelStyle: const TextStyle(fontSize: 10),
-      ),
-    );
-  }
-}
-
-class TabsIcon extends StatelessWidget {
-  final Color color;
-  final double height;
-  final double width;
-  final IconData icons;
-
-  const TabsIcon(
-      {Key? key,
-      this.color = Colors.white,
-      this.height = 60,
-      this.width = 50,
-      required this.icons})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width,
-      child: Center(
-        child: Icon(
-          icons,
-          color: color,
-        ),
       ),
     );
   }
@@ -332,10 +306,10 @@ class HorizontalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.only(right: 12, left: 8, top: 8, bottom: 8),
       child: Container(
-        height: 200,
-        width: 430,
+        height: 150,
+        width: 355,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24), color: Colors.white),
         child: Column(
@@ -410,76 +384,79 @@ class HorizontalCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      width: 390,
-                      height: 3,
-                      child: DottedLine(
-                        direction: Axis.horizontal,
-                        lineLength: double.infinity,
-                        lineThickness: 1.0,
-                        dashLength: 8.0,
-                        dashColor: Colors.grey,
-                        dashRadius: 2.0,
-                        dashGapLength: 6,
-                        dashGapColor: Colors.transparent,
-                        dashGapRadius: 0.0,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 15,
                       ),
-                    ),
-                    LineGraph(
-                      features: features,
-                      size: const Size(390, 150),
-                      labelX: const [
-                        '0',
-                        '1',
-                        '2',
-                        ' 3',
-                        ' 4',
-                        ' 5',
-                        '6',
-                        '7',
-                        '8',
-                        '9',
-                        '10',
-                        '11',
-                        '12',
-                        '13',
-                        '14',
-                        '15',
-                        '16',
-                        '17',
-                        '18',
-                        '19',
-                        '20'
-                      ],
-                      labelY: const [''],
-                      showDescription: false,
-                      graphOpacity: 0,
-                      verticalFeatureDirection: false,
-                      graphColor: Colors.white,
-                      descriptionHeight: 0,
-                    ),
-                    Container(
-                      width: 390,
-                      height: 3,
-                      child: DottedLine(
-                        direction: Axis.horizontal,
-                        //lineLength: double.infinity,
-                        lineThickness: 1.0,
-                        dashLength: 8.0,
-                        dashColor: Colors.grey,
-                        dashRadius: 0.0,
-                        dashGapLength: 6.0,
-                        dashGapColor: Colors.transparent,
-                        dashGapRadius: 0.0,
+                      Container(
+                        width: 313,
+                        height: 3,
+                        child: DottedLine(
+                          direction: Axis.horizontal,
+                          lineLength: double.infinity,
+                          lineThickness: 1.0,
+                          dashLength: 8.0,
+                          dashColor: Colors.grey,
+                          dashRadius: 2.0,
+                          dashGapLength: 6,
+                          dashGapColor: Colors.transparent,
+                          dashGapRadius: 0.0,
+                        ),
                       ),
-                    ),
-                  ],
+                      LineGraph(
+                        features: features,
+                        size: const Size(313, 150),
+                        labelX: const [
+                          '0',
+                          '1',
+                          '2',
+                          ' 3',
+                          ' 4',
+                          ' 5',
+                          '6',
+                          '7',
+                          '8',
+                          '9',
+                          '10',
+                          '11',
+                          '12',
+                          '13',
+                          '14',
+                          '15',
+                          '16',
+                          '17',
+                          '18',
+                          '19',
+                          '20'
+                        ],
+                        labelY: const [''],
+                        showDescription: false,
+                        graphOpacity: 0,
+                        verticalFeatureDirection: false,
+                        graphColor: Colors.white,
+                        descriptionHeight: 0,
+                      ),
+                      Container(
+                        width: 313,
+                        height: 3,
+                        child: const DottedLine(
+                          direction: Axis.horizontal,
+                          //lineLength: double.infinity,
+                          lineThickness: 1.0,
+                          dashLength: 8.0,
+                          dashColor: Colors.grey,
+                          dashRadius: 0.0,
+                          dashGapLength: 6.0,
+                          dashGapColor: Colors.transparent,
+                          dashGapRadius: 0.0,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -520,16 +497,16 @@ class PeopleTile extends StatelessWidget {
         ),
         trailing: Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Column(
-            children: [
-              Container(
-                width: 85,
-                child: Row(
+          child: Container(
+            width: 100,
+            child: Column(
+              children: [
+                Row(
                   children: [
                     Icon(
                       Icons.add,
                       color: Colors.green,
-                      size: 8,
+                      size: 12,
                     ),
                     Text('1000.2 '),
                     Text(
@@ -539,15 +516,15 @@ class PeopleTile extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
-              Text(
-                '04:08AM',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w100),
-              )
-            ],
+                Text(
+                  '04:08AM',
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w100),
+                )
+              ],
+            ),
           ),
         ),
       ),
